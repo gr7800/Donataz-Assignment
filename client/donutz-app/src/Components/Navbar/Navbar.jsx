@@ -2,12 +2,12 @@ import { Box, Flex, Spacer, useDisclosure } from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isScrolled, setIsScrolled] = useState(false);
-    const isAuth =  true;
+    const isAuth = useSelector((store) => store.auth.isAuth);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -28,7 +28,12 @@ const Navbar = () => {
     }, []);
 
     const handleLogin = () => {
-        // Implement login/logout functionality here
+        if (isAuth) {
+            localStorage.removeItem("token");
+            window.location.reload();
+        } else {
+            navigate("/login");
+        }
     }
 
     return (
@@ -84,6 +89,22 @@ const Navbar = () => {
                     onClick={handleLogin}
                 >
                     {isAuth ? "Logout" : "Login"}
+                </Box>
+                <Box
+                    padding={2}
+                    marginLeft={{ base: 0, md: 6 }}
+                    _hover={{ bg: "white", color: "blue", fontWeight: "bold" }}
+                    color={location.pathname === "/signup" ? "aqua" : "white"}
+                >
+                    <Link
+                        to="/profile"
+                        fontSize="xl"
+                        fontWeight="bold"
+                        textTransform="uppercase"
+                        letterSpacing="wide"
+                    >
+                        Profile
+                    </Link>
                 </Box>
                 <Box
                     padding={2}

@@ -16,7 +16,7 @@ app.get('/', (req, res) => {
     res.json({ res: "Welcome to donutz" })
 })
 
-app.use("/donutz", userRoutes);
+app.use("/donatuz", userRoutes);
 
 app.listen(PORT, () => {
     connect().then(() => {
