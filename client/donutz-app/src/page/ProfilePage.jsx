@@ -15,7 +15,7 @@ const ProfilePage = () => {
 
   const handleProfileImageUpdate = async (avatar) => {
     setIsOpenProfile(false)
-    if(avatar.length==0){
+    if (avatar.length == 0) {
       toast({
         title: "Error",
         description: "Please Enter the profile url",
@@ -23,7 +23,7 @@ const ProfilePage = () => {
         duration: 3000,
         isClosable: true,
       });
-      return ;
+      return;
     }
     try {
       const updateduser = await updateProfilePic(avatar)
@@ -60,8 +60,10 @@ const ProfilePage = () => {
   }
 
   useEffect(() => {
-    if (userData) {
+    if (userData?.name) {
       setUser(userData)
+    } else {
+      dispatch(singleuser());
     }
   }, [userData])
 
@@ -75,7 +77,7 @@ const ProfilePage = () => {
         textAlign="center"
         maxW="600px"
         w="100%"
-        minH={{ base: '400px', md: '500px' }} 
+        minH={{ base: '400px', md: '500px' }}
         display="flex"
         flexDirection="column"
         alignItems="center"
@@ -84,7 +86,7 @@ const ProfilePage = () => {
         <Heading as="h1" size="lg" mb={4} color={"white"}>
           Profile
         </Heading>
-        <Flex direction="column" alignItems="center" position="relative">
+        {user?.name && <Flex direction="column" alignItems="center" position="relative">
           <Flex position="absolute" top={2} right={10} cursor={"pointer"} onClick={() => setIsOpenProfile(true)}>
             <IconButton
               aria-label="Edit Profile"
@@ -111,7 +113,7 @@ const ProfilePage = () => {
           <Text fontSize="md" color="whitesmoke">
             Joined on {formatDate(user.createdAt)}
           </Text>
-        </Flex>
+        </Flex>}
       </Box>
       <ProfilePictureUploadModel isOpen={isopenprfile} onClose={() => setIsOpenProfile(false)} data={user} handleSubmit={handleProfileImageUpdate} />
     </Flex>

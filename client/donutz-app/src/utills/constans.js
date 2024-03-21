@@ -1,1 +1,1 @@
-export const BaseUrl = 'http://localhost:8080/donatuz'
+export const BaseUrl = 'https://donataz.onrender.com/donatuz'
