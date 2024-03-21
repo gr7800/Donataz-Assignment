@@ -9,7 +9,7 @@ router.post("/register", RegisterController);
 router.post("/login", LoginController);
 router.post("/getotp", GetOtp);
 router.patch("/updatepassword", UpdatePasswordController);
-router.patch("/profileupdate/:id", ProfileUpdateController);
+router.patch("/profileupdate", ProfileUpdateController);
 router.put("/userupdate/:id", verifyToken, UpdateUserController);
 router.delete("/delete/:id", verifyToken, deleteAuser);
 

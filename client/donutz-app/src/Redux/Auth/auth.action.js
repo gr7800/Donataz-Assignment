@@ -122,6 +122,26 @@ export const updateAuser = async (user) => {
   }
 }
 
+export const updateProfilePic = async (avatar) => {
+  const token = JSON.parse(localStorage.getItem("token"));
+  try {
+    const response = await fetch(`${BaseUrl}/profileupdate`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "token": token,
+      },
+      body: JSON.stringify({ avatar: avatar }),
+    });
+    const data = await response.json();
+    return data;
+  }
+  catch (e) {
+    console.log(e)
+    return e
+  }
+}
+
 export const deleteAuser = async (id) => {
   const token = JSON.parse(localStorage.getItem("token"));
   let res = await fetch(`${BaseUrl}/delete/${id}`, {

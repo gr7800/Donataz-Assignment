@@ -87,6 +87,7 @@ const Navbar = () => {
                     marginLeft={{ base: 0, md: 6 }}
                     _hover={{ bg: "white", color: "blue", fontWeight: "bold" }}
                     onClick={handleLogin}
+                    color={location.pathname === "/login" ? "aqua" : "white"}
                 >
                     {isAuth ? "Logout" : "Login"}
                 </Box>
@@ -94,7 +95,7 @@ const Navbar = () => {
                     padding={2}
                     marginLeft={{ base: 0, md: 6 }}
                     _hover={{ bg: "white", color: "blue", fontWeight: "bold" }}
-                    color={location.pathname === "/signup" ? "aqua" : "white"}
+                    color={location.pathname === "/profile" ? "aqua" : "white"}
                 >
                     <Link
                         to="/profile"

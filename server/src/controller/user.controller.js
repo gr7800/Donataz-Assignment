@@ -115,27 +115,24 @@ exports.GetProfile = async (req, res) => {
     }
 }
 
-// Generate a 6-digit OTP
+
 const generateOTP = () => {
-    const otp = Math.floor(100000 + Math.random() * 900000); // Generate a random 6-digit number
-    return otp.toString(); // Convert the number to a string
+    const otp = Math.floor(100000 + Math.random() * 900000); 
+    return otp.toString(); 
 };
 
 exports.GetOtp = async (req, res) => {
     const { email } = req.body;
     try {
         const userpersent = await UserModel.findOne({ email: email });
-        // If no user is found, send a 401 Unauthorized status code
         if (!userpersent) {
             return res.status(401).send({ messege: 'Incorrect useremail.' });
         }
-        // Generate OTP
         const otp = generateOTP();
 
         userpersent.otp = otp;
         await userpersent.save();
 
-        // Send OTP to the provided email
         const mailOptions = {
             from: process.env.EMAIL,
             to: email,
@@ -153,7 +150,7 @@ exports.GetOtp = async (req, res) => {
 }
 
 
-// Update password controller
+
 exports.UpdatePasswordController = async (req, res) => {
     // Extract the user ID and password from the request body
     const { email, otp, newPassword } = req.body;
@@ -182,46 +179,41 @@ exports.UpdatePasswordController = async (req, res) => {
 };
 
 
-// Profile Update controller
+
 exports.ProfileUpdateController = async (req, res) => {
-    // Extract user ID, full name, and avatar URL from request body
     const { avatar } = req.body;
-    let { id } = req.params;
     let { token } = req.headers;
     if (!token) {
-        return res.status(403).send("Unauthorized");
+        return res.status(403).send({ messege: "Unauthorized" });
     }
     try {
-        // Find the user in the database by their ID
+        let decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         if (!decodedToken) {
-            return res.status(401).send("Invalid token");
+            return res.status(401).send({ messege: "Invalid token" });
         }
+
         const updateUser = await UserModel.findByIdAndUpdate(
-            { _id: id },
+            { _id: decodedToken?._id },
             { avatar: avatar },
             { new: true }
         );
-        return res.status(200).send({ status: true, messege: "user updated successfully", user: updateUser });
+        return res.status(200).send({ status: true, messege: "profile pic updated successfully", user: updateUser });
     } catch (error) {
-        // If an error occurs, send a 500 Internal Server Error status code with the error messege
-        return res.status(500).send(error.messege);
+        return res.status(500).send({ messege: error.messege });
     }
 };
 
 exports.UpdateUserController = async (req, res) => {
     let { id } = req.params;
     try {
-        // Find the user in the database by their ID
         let updateUser = await UserModel.findByIdAndUpdate({ _id: id }, req.body);
         return res.status(200).send({ status: true, messege: "user updated successfully" });
     } catch (error) {
-        // If an error occurs, send a 500 Internal Server Error status code with the error messege
         return res.status(500).send(error.messege);
     }
 }
 
 exports.deleteAuser = async (req, res) => {
-    // Extract user ID, full name, and avatar URL from request body
     let { id } = req.params;
     console.log(id)
     try {

@@ -10,6 +10,7 @@ import {
     Input,
     Stack,
     Text,
+    useToast
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -29,6 +30,7 @@ const Signup = () => {
     const [error, setError] = useState("");
 
     const navigate = useNavigate();
+    const toast = useToast();
 
     const handleEmailChange = (e) => {
         const enteredEmail = e.target.value;
@@ -56,17 +58,37 @@ const Signup = () => {
             try {
                 let res = await axios.post(`${BaseUrl}/register`, { name: fullName, email: email, password: password });
                 console.log(res);
-                if (res?.status===200) {
-                    alert(res?.data?.messege);
+                if (res?.status === 200) {
+                    toast({
+                        title: "Success",
+                        description: res?.data?.messege,
+                        status: "success",
+                        duration: 3000,
+                        isClosable: true,
+                    });
                     navigate("/login")
+                    return;
                 }
+                toast({
+                    title: "Error",
+                    description: res?.data?.messege,
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                });
             } catch (error) {
-                setError(`Error: ${error.response.data.message}`);
-                alert(error.response.data.message);
+                console.log(error);
+                setError(`Error: ${error.response.data.messege}`);
             }
             setSubmitting(false);
         } else {
-            alert("Please fill all the field first")
+            toast({
+                title: "Error",
+                description: "Please fill all the details properly",
+                status: "error",
+                duration: 3000,
+                isClosable: true,
+              });
         }
     };
 

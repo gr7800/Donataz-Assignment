@@ -70,10 +70,6 @@ const HomePage = () => {
     setIsUpdateModel(true);
   }
 
-  useEffect(() => {
-    fetchUserDetails();
-  }, []);
-
   const handleUpdate = async (user) => {
     // console.log(user)
     setIsUpdateModel(false)
@@ -109,8 +105,12 @@ const HomePage = () => {
         isClosable: true,
       });
     }
-
   };
+
+  useEffect(() => {
+    fetchUserDetails();
+  }, []);
+
 
   return (
     <Box p={4}>

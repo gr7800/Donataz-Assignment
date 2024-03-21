@@ -33,7 +33,6 @@ const userSchema = new mongoose.Schema(
     },
     {
         versionKey: false,
-        // Set timestamps to true to automatically add createdAt and updatedAt fields.
         timestamps: true,
     }
 )
